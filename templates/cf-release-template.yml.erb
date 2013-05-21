@@ -43,7 +43,7 @@ update:
   canaries: 1
   canary_watch_time: 30000-600000
   update_watch_time: 30000-600000
-  max_in_flight: 4
+  max_in_flight: 1
   max_errors: 1
 
 networks:
@@ -71,7 +71,7 @@ resource_pools:
   size: 1
   stemcell:
     name: bosh-stemcell
-    version: latest
+    version: 644
   cloud_properties:
     instance_type: m1.small
     availability_zone: <%= find('properties.template_only.aws.availability_zone') %>
@@ -80,7 +80,7 @@ resource_pools:
   size: 4
   stemcell:
     name: bosh-stemcell
-    version: latest
+    version: 644
   cloud_properties:
     instance_type: m1.medium
     availability_zone: <%= find('properties.template_only.aws.availability_zone') %>
@@ -89,7 +89,7 @@ resource_pools:
   size: 3
   stemcell:
     name: bosh-stemcell
-    version: latest
+    version: 644
   cloud_properties:
     instance_type: m1.medium
     availability_zone: <%= find('properties.template_only.aws.availability_zone') %>
@@ -102,7 +102,7 @@ resource_pools:
 <% end -%>
   stemcell:
     name: bosh-stemcell
-    version: latest
+    version: 644
   cloud_properties:
 <% if production? -%>
     instance_type: <%= find('resource_pools.dea.cloud_properties.instance_type') %>
@@ -115,7 +115,7 @@ resource_pools:
   size: 2
   stemcell:
     name: bosh-stemcell
-    version: latest
+    version: 644
   cloud_properties:
     instance_type: m1.small
     availability_zone: <%= find('properties.template_only.aws.availability_zone') %>
@@ -205,8 +205,6 @@ jobs:
   instances: 6
 <% end -%>
   resource_pool: dea
-  update:
-    max_in_flight: 2
   networks:
   - name: cf1
     default:
