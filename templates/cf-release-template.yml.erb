@@ -34,6 +34,19 @@
     "m1.large" => 400_000,
     "m2.2xlarge" => 800_000
   }
+
+  # reserving static_ip range for cloud_controller jobs
+  # saving each one so it is possible to grep the file for reserved ips
+  cloud_controller_static_ips = []
+  cloud_controller_static_ips << ip(3, 'cf1.static')
+  cloud_controller_static_ips << ip(4, 'cf1.static')
+  cloud_controller_static_ips << ip(8, 'cf1.static')
+  cloud_controller_static_ips << ip(9, 'cf1.static')
+  cloud_controller_static_ips << ip(10, 'cf1.static')
+  cloud_controller_static_ips << ip(11, 'cf1.static')
+  cloud_controller_static_ips << ip(12, 'cf1.static')
+  cloud_controller_static_ips << ip(13, 'cf1.static')
+  cloud_controller_static_ips << ip(14, 'cf1.static')
 -%>
 
 # ENV variables for Yeti:
@@ -102,7 +115,7 @@ resource_pools:
     availability_zone: <%= find('properties.template_only.aws.availability_zone') %>
 - name: large
   network: cf1
-  size: 4
+  size: <%= find('jobs.cloud_controller.instances').to_i + find('jobs.uaa.instances').to_i %>
   stemcell:
     name: bosh-stemcell
     version: latest
@@ -128,7 +141,7 @@ resource_pools:
     availability_zone: <%= find('properties.template_only.aws.availability_zone') %>
 - name: router
   network: cf1
-  size: 2
+  size: <%= find('jobs.router.instances') %>
   stemcell:
     name: bosh-stemcell
     version: latest
@@ -166,7 +179,7 @@ jobs:
 
 - name: uaa
   template: uaa
-  instances: 2
+  instances: <%= find('jobs.uaa.instances') %>
   resource_pool: large
   networks:
   - name: cf1
@@ -183,19 +196,20 @@ jobs:
 
 - name: cloud_controller
   template: cloud_controller_ng
-  instances: 2
+  instances: <%= find('jobs.cloud_controller.instances') %>
   resource_pool: large
   networks:
   - name: cf1
     static_ips:
-    - <%= ip(3, 'cf1.static') %>
-    - <%= ip(4, 'cf1.static') %>
+<% (0..(find('jobs.cloud_controller.instances').to_i - 1)).each do |i| -%>
+    - <%= cloud_controller_static_ips[i] %>
+<% end -%>
   properties:
     ccdb: ccdb
 
 - name: router
   template: gorouter
-  instances: 2
+  instances: <%= find('jobs.router.instances') %>
   resource_pool: router
   networks:
   - name: cf1
@@ -319,6 +333,10 @@ properties:
         provider: AWS
         aws_access_key_id: <%= find("properties.template_only.aws.access_key_id") %>
         aws_secret_access_key: <%= find("properties.template_only.aws.secret_access_key") %>
+      cdn:
+        uri: <%= q("cc.droplets.cdn.uri", "") %>
+        key_pair_id: <%= q("cc.droplets.cdn.key_pair_id", "") %>
+        private_key: <%= q("cc.droplets.cdn.private_key", "").inspect %>
     cc_partition: default
     quota_definitions:
       free:
@@ -369,6 +387,7 @@ properties:
     - 10.10.16.0/20 # cf network
     allow_networks:
     - 10.10.0.2/32 # Amazon DNS server
+    - 10.10.17.0/24 # DEAs
 
   service_lifecycle:
     serialization_data_server:
