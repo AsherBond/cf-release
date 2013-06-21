@@ -47,6 +47,21 @@
   cloud_controller_static_ips << ip(12, 'cf1.static')
   cloud_controller_static_ips << ip(13, 'cf1.static')
   cloud_controller_static_ips << ip(14, 'cf1.static')
+
+  uaa_static_ips = []
+  uaa_static_ips << ip(2, 'cf1.static')
+  uaa_static_ips << ip(7, 'cf1.static')
+
+  router_static_ips = []
+  router_static_ips << ip(5, 'cf1.static')
+  router_static_ips << ip(6, 'cf1.static')
+  router_static_ips << ip(15, 'cf1.static')
+  router_static_ips << ip(16, 'cf1.static')
+  router_static_ips << ip(17, 'cf1.static')
+  router_static_ips << ip(18, 'cf1.static')
+  router_static_ips << ip(19, 'cf1.static')
+  router_static_ips << ip(20, 'cf1.static')
+
 -%>
 
 # ENV variables for Yeti:
@@ -124,11 +139,7 @@ resource_pools:
     availability_zone: <%= find('properties.template_only.aws.availability_zone') %>
 - name: dea
   network: cf1
-<% if production? -%>
   size: <%= find('resource_pools.dea.size') %>
-<% else -%>
-  size: 8
-<% end -%>
   stemcell:
     name: bosh-stemcell
     version: latest
@@ -184,8 +195,9 @@ jobs:
   networks:
   - name: cf1
     static_ips:
-    - <%= ip(2, 'cf1.static') %>
-    - <%= ip(7, 'cf1.static') %>
+<% (0..(find('jobs.uaa.instances').to_i - 1)).each do |i| -%>
+    - <%= uaa_static_ips[i] %>
+<% end -%>
 
 - name: login
   template: login
@@ -217,8 +229,9 @@ jobs:
     - dns
     - gateway
     static_ips:
-    - <%= ip(5, 'cf1.static') %>
-    - <%= ip(6, 'cf1.static') %>
+<% (0..(find('jobs.router.instances').to_i - 1)).each do |i| -%>
+    - <%= router_static_ips[i] %>
+<% end -%>
 
 - name: health_manager
   template: health_manager_next
@@ -229,11 +242,7 @@ jobs:
 
 - name: dea_next
   template: dea_next
-<% if production? -%>
   instances: <%= find('jobs.dea_next.instances') %>
-<% else -%>
-  instances: 8
-<% end -%>
   update:
     max_in_flight: <%= q("dea.update.max_in_flight", 1) %>
   resource_pool: dea
