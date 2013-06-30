@@ -219,20 +219,6 @@ jobs:
   properties:
     ccdb: ccdb
 
-- name: router
-  template: gorouter
-  instances: <%= find('jobs.router.instances') %>
-  resource_pool: router
-  networks:
-  - name: cf1
-    default:
-    - dns
-    - gateway
-    static_ips:
-<% (0..(find('jobs.router.instances').to_i - 1)).each do |i| -%>
-    - <%= router_static_ips[i] %>
-<% end -%>
-
 - name: health_manager
   template: health_manager_next
   instances: 1
@@ -262,6 +248,20 @@ jobs:
   resource_pool: small
   networks:
   - name: cf1
+
+- name: router
+  template: gorouter
+  instances: <%= find('jobs.router.instances') %>
+  resource_pool: router
+  networks:
+  - name: cf1
+    default:
+    - dns
+    - gateway
+    static_ips:
+<% (0..(find('jobs.router.instances').to_i - 1)).each do |i| -%>
+    - <%= router_static_ips[i] %>
+<% end -%>
 
 properties:
   template_only:
@@ -328,6 +328,10 @@ properties:
         provider: AWS
         aws_access_key_id: <%= find("properties.template_only.aws.access_key_id") %>
         aws_secret_access_key: <%= find("properties.template_only.aws.secret_access_key") %>
+      cdn:
+        uri: <%= q("cc.resource_pool.cdn.uri", "") %>
+        key_pair_id: <%= q("cc.resource_pool.cdn.key_pair_id", "") %>
+        private_key: <%= q("cc.resource_pool.cdn.private_key", "").inspect %>
     packages:
       minimum_size: 1048576
       app_package_directory_key: <%= q("cc.packages.app_package_directory_key", "#{find("properties.domain").gsub(".", "-")}-cc-packages") %>
@@ -335,6 +339,10 @@ properties:
         provider: AWS
         aws_access_key_id: <%= find("properties.template_only.aws.access_key_id") %>
         aws_secret_access_key: <%= find("properties.template_only.aws.secret_access_key") %>
+      cdn:
+        uri: <%= q("cc.packages.cdn.uri", "") %>
+        key_pair_id: <%= q("cc.packages.cdn.key_pair_id", "") %>
+        private_key: <%= q("cc.packages.cdn.private_key", "").inspect %>
     droplets:
       minimum_size: 1048576
       droplet_directory_key: <%= q("cc.droplets.droplet_directory_key", "#{find("properties.domain").gsub(".", "-")}-cc-droplets") %>
@@ -398,10 +406,6 @@ properties:
     - 10.10.0.2/32 # Amazon DNS server
     - 10.10.17.0/24 # DEAs
 
-  service_lifecycle:
-    serialization_data_server:
-    - 169.254.1.1   # fake, unused but needed by ccng job
-
   syslog_aggregator:
     address: 10.10.16.10
     port: 54321
@@ -415,14 +419,6 @@ properties:
       smtp_server: smtp.gmail.com
       smtp_port: 587
       smtp_domain: gmail.com
-
-  serialization_data_server:  # fake, unused but needed by ccng job
-    upload_token: <%= find("properties.serialization_data_server.upload_token") %>
-    use_nginx: true
-    upload_timeout: 10
-    port: 8080
-    upload_file_expire_time: 600
-    purge_expired_interval: 30
 
   login:
     protocol: https
