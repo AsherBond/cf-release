@@ -22,9 +22,6 @@
 [submodule "src/warden"]
   path = src/warden
   url = https://github.com/cloudfoundry/warden.git
-[submodule "src/services_warden"]
-  path = src/services_warden
-  url = https://github.com/cloudfoundry/warden.git
 [submodule "src/cloud_controller"]
   path = src/cloud_controller
   url = https://github.com/cloudfoundry/cloud_controller.git
@@ -58,3 +55,6 @@
 [submodule "src/gorouter/src/github.com/rcrowley/go-metrics"]
 	path = src/gorouter/src/github.com/rcrowley/go-metrics
 	url = https://github.com/rcrowley/go-metrics.git
+[submodule "src/gorouter/src/github.com/nu7hatch/gouuid"]
+	path = src/gorouter/src/github.com/nu7hatch/gouuid
+	url = https://github.com/nu7hatch/gouuid.git

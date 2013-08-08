@@ -18,13 +18,12 @@ packages:
 - dea_next
 - warden
 - rootfs_lucid64
-- ruby_next
+- ruby
 - golang
 - sqlite
 - mysqlclient
 - syslog_aggregator
 - libpq
-- imagemagick
 - git
 - buildpack_cache
 - insight_agent
@@ -67,4 +66,9 @@ properties:
   dea_next.streaming_timeout:
     description:
     default: 60
+  disk_quota_enabled:
+    description: "disk quota must be disabled to use warden-inside-warden with the warden cpi"
+    default: true
+  syslog_aggregator:
+    description: "Syslog aggregator stuff"
 
