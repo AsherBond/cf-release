@@ -83,6 +83,10 @@ insight_agent/insight-agent.zip:
   object_id: rest/objects/4e4e78bca41e121004e4e7d517618f04f306ad764f01
   sha: bdeeebb6853a7e7bea64ceb8b2c6cd1a5eb3df51
   size: 10968004
+postgres/postgres-9.0.3-1.amd64.tar.gz:
+  object_id: rest/objects/4e4e78bca31e122004e4e8ec646e2104f306af917d30
+  sha: e47ee9c841ecde4df121f44df282aeb3c50a48d2
+  size: 16203511
 postgres/postgres-9.0.3-1.i386.tar.gz:
   object_id: rest/objects/4e4e78bca21e121004e4e7d511f55304f306b0371f99
   sha: b2bde31e720eb219bfdc9f1b784f985ecca2cbfb
@@ -388,11 +392,6 @@ buildpack_cache/auto-reconfiguration-0.6.7.jar:
   sha: !binary |-
     NzI4MjI4ZjM2NDhkNjc5NzU5ZGYwNGZjZTYyMjBkNDQ2ZTVmZGQ5Zg==
   size: 708374
-golang/go1.1.1.src.tar.gz:
-  object_id: 668a3b49-03fd-4742-b5a8-f6a76b387106
-  sha: !binary |-
-    ZjM2NWFlZDgxODNlNDg3YTQ4YTY2YWNlN2JmMzZlNTk3NGRmZmJiMw==
-  size: 9045336
 buildpack_cache/openjdk-1.7.0_25.tar.gz:
   object_id: 3e47e45f-2f65-42f6-ac29-bc9782c3714e
   sha: !binary |-
@@ -433,26 +432,21 @@ uaa/tomcat-7.0.42.tar.gz:
   sha: !binary |-
     MDAxYTY0NjI5YTkzMTAzZDRmNTNhYzk1ZmFmM2U1MmE2MzY1N2I5NQ==
   size: 7955948
-postgres/postgresql-9.2.4-x86_64.tar.gz:
-  object_id: abd8f341-0c8d-41fa-b935-bfa39efa874b
-  sha: !binary |-
-    Y2YzNDBjYTUxZWNhYWZjMDRhYTlkM2M2NDkwZmI3ZDU3ZmQ1YTNiNw==
-  size: 10519400
 loggregator/deaagent-linux-amd64.gz:
-  object_id: b6525d2c-c34b-4ec2-9e4c-10190ece2fa7
+  object_id: b4a30310-18c4-4ae7-9190-e9b274ec5a7c
   sha: !binary |-
-    OTliN2ZkMThjZmFmMTVkOWNlZGRjMWQwZWEzNGM3OTFlNDE5ZDIxYg==
-  size: 1655150
+    Yzg5OTk0YjM2OWZiMDgyYTE2MGYzYTkwMjRkNTBjOTAyMDkzNTc1MA==
+  size: 1644505
 loggregator/loggregator-linux-amd64.gz:
-  object_id: c883e86d-9d04-45b2-a603-f3ba23f28458
+  object_id: 1d35f336-bbe9-4301-b7ff-f7668501972c
   sha: !binary |-
-    ZjNmMmVmNzE0ODdhMGQ3ZDgwYzgyZGJjZGFmYjc5YTk0MmJjNTg4OA==
-  size: 1742566
+    OTNlODY4NjFiMTYwMTc3ZjZmNTNmYjBhZTQ5OTI1MTZjYWEzNTYxMw==
+  size: 1731607
 loggregator/loggregatorrouter-linux-amd64.gz:
-  object_id: b4669635-0499-4e33-93eb-361e5f3b348b
+  object_id: ab33d563-871a-44e8-974f-0e269e1150a6
   sha: !binary |-
-    NGU2NjE5NzA2NDZjZTU5NGQyYWM0NjVmYjAxYTM3ODFiZTE0Njg0ZQ==
-  size: 1654838
+    MTBhYjNmNDI1YzIzZjk1NWNjYmJjMWQ3MmY2M2RhZTZmNjBjMGI1Mg==
+  size: 1658405
 uaa/cloudfoundry-identity-uaa-1.4.5.war:
   object_id: e92c6500-1460-4eac-b4a0-ec3d6f4bed3b
   sha: !binary |-
@@ -553,3 +547,8 @@ buildpack_cache/java-buildpack/http:%2F%2Fdownload.pivotal.io.s3.amazonaws.com%2
   sha: !binary |-
     MjhhZWQ1Y2I3ZmQ0MzQ3YmRlYTJiNGEyMDIyOGJlOTIzMjI2MzExYQ==
   size: 2884
+golang/go1.1.2.linux-amd64-yacc-shaved.tar.gz:
+  object_id: 12274b09-fe06-4990-a2fe-1b6e04616009
+  sha: !binary |-
+    MDJhYTlmNDdiOTVjZTAxMmI1NzAyZGFmNDFkM2ZmNGI3ODFhYzMwZQ==
+  size: 41768327
