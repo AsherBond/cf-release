@@ -1,3 +1,9 @@
+meta:
+
+  stemcell:
+    name: bosh-vsphere-esxi-ubuntu
+    version: latest
+
 compilation:
   cloud_properties:
     ram: 1024
@@ -83,6 +89,12 @@ jobs:
       - name: cf2
         static_ips: (( static_ips(0) ))
 
+  - name: nats_z1
+    instances: 1
+    networks:
+      - name: cf1
+        static_ips: (( static_ips(1) ))
+
   - name: nats_z2
     instances: 1
     networks:
@@ -137,10 +149,15 @@ jobs:
       - name: cf2
         static_ips: (( static_ips(9) ))
 
+  - name: ha_proxy_z1
+    instances: 1
+    networks:
+      - name: cf1
+        static_ips: (( static_ips(3) ))
+
 
 properties:
-  domain: (( jobs.router_z1.networks.cf1.static_ips.[0] ".xip.io" ))
-  system_domain: (( domain ))
+  domain: (( jobs.ha_proxy_z1.networks.cf1.static_ips.[0] ".xip.io" ))
   system_domain_organization: pivotal
 
   ccdb:

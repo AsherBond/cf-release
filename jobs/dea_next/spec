@@ -2,16 +2,15 @@
 name: dea_next
 templates:
   dea.yml.erb: config/dea.yml
-  dea_ctl: bin/dea_ctl
+  dea_ctl.erb: bin/dea_ctl
   drain.erb: bin/drain
   syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
-  platform.yml: config/platform.yml
 
-  warden_ctl: bin/warden_ctl
   warden.yml.erb: config/warden.yml
+  warden_ctl.erb: bin/warden_ctl
 
-  dir_server_ctl: bin/dir_server_ctl
+  dir_server_ctl.erb: bin/dir_server_ctl
 
 packages:
 - common
@@ -19,15 +18,8 @@ packages:
 - warden
 - rootfs_lucid64
 - ruby
-- golang
-- sqlite
-- mysqlclient
 - syslog_aggregator
-- libpq
-- git
 - buildpack_cache
-- insight_agent
-- libyaml
 properties:
   domain:
     description: "DNS domain name for this Cloud Foundry deployment"
@@ -40,7 +32,7 @@ properties:
   nats.user:
     description: "user name for NATS login"
   dea_next.allow_networks:
-    description: 
+    description:
   dea_next.deny_networks:
     description:
   dea_next.disk_mb:
@@ -82,5 +74,11 @@ properties:
     default: true
   syslog_aggregator:
     description: "Syslog aggregator stuff"
-  loggregator.trafficcontroller:
-    description: The url used to emit messages to the Loggregator
+  loggregator_endpoint.host:
+    description: "The host used to emit messages to the Loggregator"
+  loggregator_endpoint.port:
+    description: "The port used to emit messages to the Loggregator"
+    default: 3456
+  loggregator_endpoint.shared_secret:
+    description: "The key used to sign log messages"
+

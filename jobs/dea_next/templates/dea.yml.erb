@@ -33,9 +33,10 @@ logging:
   syslog: vcap.dea_next
   <% end %>
 
-<% if_p("loggregator.trafficcontroller") do |trafficcontroller| %>
+<% if_p("loggregator_endpoint.host", "loggregator_endpoint.port", "loggregator_endpoint.shared_secret") do |host, port, shared_secret| %>
 loggregator:
-  router: <%= trafficcontroller %>
+  router: <%= host %>:<%= port %>
+  shared_secret: <%= shared_secret %>
 <% end %>
 
 index: <%= spec.index %>
@@ -56,11 +57,6 @@ bind_mounts:
 staging:
   enabled: true
   max_staging_duration: <%= p("dea_next.max_staging_duration") %>
-  max_active_tasks: 10
-  staging_base_dir: /var/vcap/data/dea_next/staging
-  platform_config:
-    cache: /var/vcap/data/stager/package_cache/ruby
-    insight_agent: /var/vcap/packages/insight_agent/insight-agent.zip
   environment:
     BUILDPACK_CACHE: "/var/vcap/packages/buildpack_cache"
 

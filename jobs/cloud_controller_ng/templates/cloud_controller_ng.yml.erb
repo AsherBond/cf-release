@@ -6,7 +6,6 @@ message_bus_uri: nats://<%= p("nats.user") %>:<%= p("nats.password") %>@<%= p("n
 
 external_domain:
   - <%= p("ccng.external_host") %>.<%= p("domain") %>
-  - "api.<%= p("domain") %>"
 
 system_domain_organization: <%= p("system_domain_organization") %>
 system_domain: <%= p("system_domain") %>
@@ -34,8 +33,6 @@ info:
   support_address: <%= p("support_address") %>
   description: <%= p("description") %>
   api_version: <%= p("api_version") %>
-# TODO: put back once json schema is sorted out
-# allow_debug: false
 
 <% if_p("directories.droplets",
         "ccng.directories.staging_manifests",
@@ -54,9 +51,10 @@ logging:
   level: <%= p("ccng.logging_level") %>
   max_retries: <%= p("ccng.logging_max_retries") %>
 
-<% if_p("loggregator.trafficcontroller") do |trafficcontroller| %>
+<% if_p("loggregator_endpoint.host", "loggregator_endpoint.port", "loggregator_endpoint.shared_secret") do |host, port, shared_secret| %>
 loggregator:
-  router: <%= trafficcontroller %>
+  router: <%= host %>:<%= port %>
+  shared_secret: <%= shared_secret %>
 <% end %>
 
 <% db = p("ccdb_ng.databases").find { |db| db["tag"] == "cc" } %>
@@ -66,10 +64,6 @@ db: &db
   max_connections: <%= p("ccdb_ng.max_connections") %>
   pool_timeout: <%= p("ccdb_ng.pool_timeout") %>
   log_level: <%= p("ccng.db_logging_level") %>
-
-active_record_db:
-  << : *db
-  pool: <%= p("ccdb_ng.max_ar_connections") %>
 
 <% scheme = p("uaa.no_ssl") ? "http" : "https"
    domain = p("domain") %>
