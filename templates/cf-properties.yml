@@ -54,8 +54,12 @@ properties:
     newrelic:
       license_key: ~
       environment_name: (( meta.environment ))
-      monitor_mode: false
       developer_mode: (( cc.development_mode ))
+      monitor_mode: (( merge || false ))
+      capture_params: (( merge || false ))
+      transaction_tracer:
+        enabled: (( merge || true ))
+        record_sql: (( merge || "obfuscated" ))
 
     buildpacks:
       buildpack_directory_key: (( domain "-cc-buildpacks" ))
@@ -115,14 +119,6 @@ properties:
         access-token-validity: 1209600
         refresh-token-validity: 1209600
         redirect-uri: (( "https://console." domain "/oauth/callback" ))
-      billing:
-        override: true
-        scope: uaa.none
-        authorities: cloud_controller.read,cloud_controller.write,cloud_controller.admin,uaa.resource,scim.read,scim.write
-        secret: (( merge ))
-        authorized-grant-types: client_credentials
-        access-token-validity: 1209600
-        refresh-token-validity: 1209600
       app-direct:
         override: true
         authorities: app_direct_invoice.write
